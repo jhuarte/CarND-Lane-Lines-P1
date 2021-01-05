@@ -33,18 +33,15 @@ In this project you will detect lane lines in images using Python and OpenCV.  O
 The pipeline developed during the project has six main steps and is embedded on the funtion `lane_line_detection(frame,debug)`. A varaible `param` has been defined as a dictionary to store all the parameters that must be tunned during the development.
 
 
-* **STEP 1: Applies the Grayscale transform**: 
+* **STEP 1: Applies the Grayscale transform**: The first step the converts a color image to a grayscale image using the [OpenCV](https://opencv.org/) funtion `cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)`. This conversion let us to work using only one channel of color instead 3 channels on a color image (RGB,R=red,G=Green,B=Blue).
 
-    The first step the converts a color image to a grayscale image using the [OpenCV](https://opencv.org/) funtion `cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)`. This conversion let us to work using only one channel of color instead 3 channels on a color image (RGB,R=red,G=Green,B=Blue).
-
-<img src="test_images/solidWhiteRight.jpg" width="240"/> <img src="test_images_output/grayscale_solidWhiteRight.jpg" width="240"/>
-    
+    <img src="test_images/solidWhiteRight.jpg" width="240"/> <img src="test_images_output/grayscale_solidWhiteRight.jpg" width="240"/>    
     
 * **STEP 2: Applies a Gaussian Noise kernel**: In the second step, a [gaussian](https://docs.opencv.org/2.4/modules/imgproc/doc/filtering.html?highlight=gaussianblur#gaussianblur) filter `cv2.GaussianBlur` is applied before running Canny detector, which is essentially a way of suppressing noise and spurious gradients by averaging (`blur_kernel` is the parameter to be tunned and larger value implies averaging, or smoothing, over a larger area). `cv2.Canny()` actually applies Gaussian smoothing internally, but it's not a changeable parameter.  
     
         - `blur_kernel: 5`
 
-<img src="test_images_output/grayscale_solidWhiteRight.jpg" width="240"/> <img src="test_images_output/gaussian_blur_solidWhiteRight.jpg" width="240"/>
+    <img src="test_images_output/grayscale_solidWhiteRight.jpg" width="240"/> <img src="test_images_output/gaussian_blur_solidWhiteRight.jpg" width="240"/>
 
 * **STEP 3: Applies the Canny transform**: After having the filtered imaged (and in grayscale), the [Canny detector](https://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/canny_detector/canny_detector.html) `cv2.Canny`  is applied to the image to detect the edges. The algorithm will first detect strong edge (strong gradient) pixels above the `high_threshold`, and reject pixels below the `low_threshold`. The recomendation to adjust this two parameters is to use a relation 1:2 or 1:3. Next, pixels with values between the low_threshold and high_threshold will be included as long as they are connected to strong edges. The output edges is a binary image with white pixels tracing out the detected edges and black everywhere else.
      
@@ -52,7 +49,7 @@ The pipeline developed during the project has six main steps and is embedded on 
         - `high_threshold: 50`
         - `low_threshold: 150`
         
-<img src="test_images_output/gaussian_blur_solidWhiteRight.jpg" width="240"/> <img src="test_images_output/canny_solidWhiteRight.jpg" width="240"/>
+    <img src="test_images_output/gaussian_blur_solidWhiteRight.jpg" width="240"/> <img src="test_images_output/canny_solidWhiteRight.jpg" width="240"/>
 
         
 * **STEP 4: Applies an image mask**: Then a mask filter is applied to the binary image with the edges detected to obtain the region of interest (where the lane lines are suppoused to be. In this case, in order to make the pipeline more robust we create two ROI (the function `region_of_interest` is appplied twice with difetent parameters), one for the left lane lines and other for the right lane lines, as it's represented on the next figure:
@@ -63,7 +60,7 @@ The pipeline developed during the project has six main steps and is embedded on 
                      / /               \ \
          ymax  (lx1)/ / (lx4)       (rx1\ \ (rx4)
     
- <img src="test_images_output/canny_solidWhiteRight.jpg" width="240"/> <img src="test_images_output/masked_img_solidWhiteRight.jpg" width="240"/>
+    <img src="test_images_output/canny_solidWhiteRight.jpg" width="240"/> <img src="test_images_output/masked_img_solidWhiteRight.jpg" width="240"/>
 
 * **STEP 5: Applies hough transform and draw lines**: Then the Hough line algorithm (a specific function that use lines as the model) is used to compute the lines segments `cv2.HoughLinesP`. 
     
@@ -73,21 +70,22 @@ The pipeline developed during the project has six main steps and is embedded on 
         - `threshol: 15`
         - `min_line_le: 30`
         - `max_line_gap: 20`
-
- <img src="test_images_output/masked_img_solidWhiteRight.jpg" width="240"/> <img src="test_images_output/hough_lines_solidWhiteRight.jpg" width="240"/>
-
+    <img src="test_images_output/masked_img_solidWhiteRight.jpg" width="240"/> <img src="test_images_output/hough_lines_solidWhiteRight.jpg" width="240"/>
 
 * **STEP 6: `draw_lines` function modifications**: The `draw_lines` function provided, has been modified to select the line segments that correspond to the left lane lines (negative slopes) or to the right lane lines (positive slope), delete the lines segments with a very high slope (positve and negative, for example horizontal line segments that correspond with road defects or other issues), average the slopes and paint then with a differente color.
-<img src="examples/laneLines_thirdPass.jpg" width="240"/>
 
- <img src="test_images_output/hough_lines_solidWhiteRight.jpg" width="240"/> <img src="test_images_output/final_img_solidWhiteRight.jpg" width="240"/>
+    <img src="test_images_output/hough_lines_solidWhiteRight.jpg" width="240"/> <img src="test_images_output/final_img_solidWhiteRight.jpg" width="240"/> <img src="test_images_output/solidWhiteRight.jpg" width="240"/>
 
+Here you can find the result to apply the pipeline to the set of images `test_images` provided using the average/extrapolate function:
 
-Here you can find the result to apply the pipeline to the set of images provided using the average/extrapolate function:
-
+   <img src="test_images_output/solidWhiteCurve.jpg" width="240"/> <img src="test_images_output/solidWhiteRight.jpg" width="240"/> <img src="test_images_output/solidYellowCurve.jpg" width="240"/>
+    <img src="test_images_output/solidYellowCurve2.jpg" width="240"/><img src="test_images_output/solidYellowLeft.jpg" width="240"/><img src="test_images_output/whiteCarLaneSwitch.jpg" width="240"/>
 
 And the 3 videos:
 
+* [Project 1: Find lane line on a road (Line segments detection)](https://youtu.be/EG10-6lzfwQ)
+* [Project 1: Find lane line on a road (full lines)](https://youtu.be/fEo__LSQS64)
+* [Project 1: Find lane line on a road (Challenge sitaution)](https://youtu.be/GuqJ2c6yqNk)
 
 
 ### 2. Identify potential shortcomings with your current pipeline

@@ -88,17 +88,26 @@ The pipeline developed during the project has six main steps and is embedded on 
 
 ### 2. Identify potential shortcomings with your current pipeline
 
-
+* The lines detected flip a little bit on the videos. As we are making the average/extrapolation of each frame the result slope is the calculus of the slopes detected on the frame. 
+* The algorithm doen't work very well with spurious data so use techniques for roboust estimation like LS, MLS or RANSAC should be a good idea
+* The line model used be the Hough transformation is very simple, so only straigh lines can be detected
+* The ROI area is fixed, so it's not possible to adapt the lane line detection pipe line to different scenarios.
 
 
 
 ### 3. Suggest possible improvements to your pipeline
 
 
+* As the lines don't change to mucho between frames, take into account the previous slopes to calculate the new one.
+* Include a roboust estimation algorithm like LS, MLS or RANSAC
+* Use more complex models for the lines to be able to calculate lines in corners
+* Adaptative ROI areas using different approaches to detect the lane lines in multiple scenarios (diferent roads) with different withd
 
-## Licence
+# Licence
+[MIT](https://choosealicense.com/licenses/mit/)
 
+# Contribute
+Pull requests are welcome. For major changes, please open an issue first to discuss.
 
-
-## About me
-
+# About me
+My name is [Javier Huarte](https://github.com/jhuarte) @jhuarte. I'm a Computer Science Engineer by EUPLA & UOC Univerties. Robotics, coding, cycling and motorsport apossionated. Actually R&D Engineer at [ITAINNOVA](www.itainnova.es).

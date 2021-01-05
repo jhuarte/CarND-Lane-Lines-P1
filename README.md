@@ -104,6 +104,9 @@ And the 3 videos:
 * Include a roboust estimation algorithm like LS, MLS or RANSAC
 * Use more complex models for the lines to be able to calculate lines in corners
 * Adaptative ROI areas using different approaches to detect the lane lines in multiple scenarios (diferent roads) with different withd
+* Suggestions done by the mentor:
+    * [Here](https://stackoverflow.com/questions/36598897/python-and-opencv-improving-my-lane-detection-algorithm) you can find a good approach to develop a better algorothm.
+    * [ROBUST AND REAL TIME DETECTION OF CURVY LANES (CURVES) HAVING DESIRED SLOPES FOR DRIVING ASSISTANCE AND AUTNOMOUS VEHICLES](https://airccj.org/CSCP/vol5/csit53211.pdf), [Amartansh Dubey](dubeyamartansh@gmail.com) and [K. M. Bhurchandi](bhurchandikm@ece.vnit.ac.in), Department of Electronics and Communication Engineering, Visvesvaraya Natioanal Institute of Technology, Nagpur, India
 
 # Licence
 [MIT](https://choosealicense.com/licenses/mit/)
